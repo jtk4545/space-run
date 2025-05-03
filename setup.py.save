@@ -1,0 +1,38 @@
+"""
+This is a setup.py script to create a standalone macOS application
+"""
+
+from setuptools import setup
+
+APP = ['run.py']
+DATA_FILES = [
+    ('', ['high_score.json']),
+    ('geodash', ['geodash/constants.py', 
+                'geodash/main.py', 
+                'geodash/obstacles.py',
+                'geodash/player.py',
+                'geodash/utils.py',
+                'geodash/visuals.py'])
+]
+
+OPTIONS = {
+    'argv_emulation': True,
+    'packages': ['pygame'],
+    'iconfile': 'space_run_icon.icns',
+    'plist': {
+        'CFBundleName': 'Space Run',
+        'CFBundleDisplayName': 'Space Run',
+        'CFBundleGetInfoString': 'Space Run - A fast-paced side-scrolling game',
+        'CFBundleIdentifier': 'com.yourname.spacerun',
+        'CFBundleVersion': '1.0.0',
+        'CFBundleShortVersionString': '1.0.0',
+        'NSHumanReadableCopyright': 'Copyright © 2023, Your Name',
+    }
+}
+
+setup(
+    app=APP,
+    data_files=DATA_FILES,
+    options={'py2app': OPTIONS},
+    setup_requires=['py2app'],
+) 
