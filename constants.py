@@ -1,54 +1,70 @@
-import pygame
+"""Pure game constants — no display side effects on import."""
 
-# Game constants
-# Original values for reference
-ORIGINAL_WIDTH, ORIGINAL_HEIGHT = 800, 400  
+# Logical design resolution (scaled to window at runtime)
+WIDTH, HEIGHT = 1280, 720
+FPS = 60
+SIM_DT = 1 / 60
 
-# Get the display info to determine full screen dimensions
-pygame.init()
-display_info = pygame.display.Info()
-WIDTH, HEIGHT = display_info.current_w, display_info.current_h
+GROUND_HEIGHT = 110
+GROUND_Y = HEIGHT - GROUND_HEIGHT
 
-# Calculate scaling factors to maintain proper element sizing
-SCALE_X = WIDTH / ORIGINAL_WIDTH
-SCALE_Y = HEIGHT / ORIGINAL_HEIGHT
+# Player body (side-view hovercraft) and forgiving hurtbox
+PLAYER_X = 260
+PLAYER_W, PLAYER_H = 56, 26
+HURT_INSET_X, HURT_INSET_Y = 8, 4
 
-# Adjusted constants for full screen
-GRAVITY = 1 * SCALE_Y
-JUMP_STRENGTH = 18 * SCALE_Y
-GROUND_HEIGHT = int(50 * SCALE_Y)
-PLAYER_SIZE = int(40 * SCALE_X)
-OBSTACLE_WIDTH_MIN = int(60 * SCALE_X)
-OBSTACLE_WIDTH_MAX = int(120 * SCALE_X)
-OBSTACLE_MIN_HEIGHT = int(50 * SCALE_Y)
-OBSTACLE_MAX_HEIGHT = int(120 * SCALE_Y)
-GAME_SPEED = 5 * SCALE_X
-MIN_OBSTACLE_DISTANCE = int(150 * SCALE_X)
-MAX_OBSTACLE_DISTANCE = int(300 * SCALE_X)
-SPIKE_WIDTH = int(30 * SCALE_X)
-SPIKE_HEIGHT = int(30 * SCALE_Y)
-SPIKE_CHANCE = 0.3  # 30% chance for a spike instead of a platform
+# Physics (px, px/s, px/s^2)
+GRAVITY = 2200.0
+JUMP_VELOCITY = 720.0
+DOUBLE_JUMP_VELOCITY = 680.0
+MAX_FALL_SPEED = 1400.0
+COYOTE_TIME = 0.10
+JUMP_BUFFER = 0.12
+VARIABLE_JUMP_CUT = 0.45
+LEDGE_TOLERANCE = 10
 
-# Enhanced colors and visuals
-BG_COLOR = (10, 10, 35)  # Darker blue background
-PLAYER_COLOR = (0, 240, 255)  # Brighter player color
-OBSTACLE_COLOR = (255, 70, 70)  # Lighter red for obstacles
-GROUND_COLOR = (40, 210, 40)  # Green ground
-PARTICLE_COLORS = [(255, 255, 150), (255, 200, 100), (255, 150, 100), (255, 220, 220)]  # Lighter, less saturated colors
-SPIKE_COLOR = (255, 30, 30)  # Red for spikes
+# Derived reach — level design rules are written against these
+SINGLE_JUMP_RISE = JUMP_VELOCITY ** 2 / (2 * GRAVITY)            # ~118 px
+DOUBLE_JUMP_RISE = SINGLE_JUMP_RISE + DOUBLE_JUMP_VELOCITY ** 2 / (2 * GRAVITY)  # ~223 px
 
-# Visual effects constants
-ENABLE_BLOOM = True
-ENABLE_PARALLAX = True
-PARTICLE_FREQUENCY = 0.005  # Lower value means fewer particles
+# Endless pacing
+ENDLESS_SPEED_START = 360.0
+ENDLESS_SPEED_MAX = 500.0
 
-# High score file
+# Power-ups
+SHIELD_DURATION = 8.0
+OVERDRIVE_DURATION = 5.0
+OVERDRIVE_TIME_SCALE = 1.25
+SLOW_DURATION = 4.0
+SLOW_TIME_SCALE = 0.6
+
+HIT_IFRAMES = 1.5
+HIT_STOP = 0.07
+
+# Palette — muted lunar industrial, warm only for danger
+SKY_TOP = (4, 6, 12)
+SKY_HORIZON = (16, 26, 44)
+MOUNTAIN_FAR = (20, 27, 40)
+MOUNTAIN_NEAR = (28, 35, 50)
+GROUND_TOP = (70, 76, 88)
+GROUND_BOTTOM = (26, 29, 36)
+STEEL = (52, 60, 74)
+STEEL_LIGHT = (128, 144, 164)
+STEEL_DARK = (26, 31, 40)
+HAZARD_YELLOW = (230, 180, 40)
+DANGER = (255, 96, 60)
+PLASMA = (255, 150, 70)
+ACCENT = (96, 200, 255)
+TEXT = (226, 232, 240)
+TEXT_DIM = (140, 152, 170)
+GOLD = (255, 205, 90)
+WARN = (255, 100, 90)
+SHIELD_COLOR = (90, 170, 255)
+OVERDRIVE_COLOR = (255, 175, 70)
+SLOW_COLOR = (170, 150, 255)
+
+# Persistence
+PROGRESS_FILE = "progress.json"
 HIGH_SCORE_FILE = "high_score.json"
 
-# Set up the display - fullscreen mode
-screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
-pygame.display.set_caption("Geometry Dash - Enhanced Edition")
-clock = pygame.time.Clock()
-
-# Add fullscreen toggle flag
-is_fullscreen = True 
+STARTING_LIVES = 3

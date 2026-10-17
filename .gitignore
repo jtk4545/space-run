@@ -12,6 +12,8 @@ dist/
 *.dist-info
 debug_log.txt
 high_score.json
+progress.json
+.DS_Store
 Space Run.app
 venv/
 build_env/

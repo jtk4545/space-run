@@ -1,40 +1,47 @@
 # Space Run
 
-![Space Run Game Screenshot](images/game-screenshot.png)
+A side-scrolling lunar freight runner with a 10-sector **Campaign** and an **Endless** mode.
 
-A fast-paced side-scrolling runner game where you navigate through obstacles in space.
+## Run
 
-## Installation & Startup
-1. Make sure you have Python 3 installed
-2. Make the start script executable:
-   ```bash
-   chmod +x start.sh
-   ```
-3. Run the game:
-   ```bash
-   ./start.sh
-   ```
-   This will automatically:
-   - Create a Python virtual environment if it doesn't exist
-   - Install all required dependencies
-   - Launch the game
-
-## How to Play
-- Use SPACE to jump
-- Collect power-ups to gain advantages
-- Avoid obstacles and spikes
-- Press F11 to toggle fullscreen
-- Press ESC to exit
-
-## Features
-- Multiple power-ups with different effects
-- Lives system
-- High score tracking
-- Dynamic visual effects
+```bash
+./start.sh
+```
 
 ## Controls
-- SPACE: Jump
-- H: Show power-up guide
-- F11: Toggle fullscreen
-- ESC: Exit fullscreen/game
-- R: Restart game (when game over) 
+
+| Input | Action |
+|---|---|
+| SPACE / W / Up | Jump; press again in the air for the second thruster |
+| Release jump early | Shorter hop |
+| ESC | Pause |
+| F11 | Toggle fullscreen |
+| Arrows + Enter | Menus |
+
+## Level design
+
+Levels are built from physics-aware beats in `game/levels.py` (crates, walls, spike strips,
+catwalks, hover mines, plasma vents). Every campaign level and sampled endless runs are
+checked by a bot that plays them with the real physics, handicapped so a pass means
+"comfortably clearable", not frame-perfect:
+
+```bash
+python tools/validate_levels.py        # all levels + endless samples
+python tools/validate_levels.py 3 4    # specific sectors
+```
+
+Run it after editing any level.
+
+## Layout
+
+```
+run.py / main.py     entry + orchestrator
+constants.py         physics, palette, tuning (1280x720 logical)
+game/physics.py      deterministic player step (shared with the validator)
+game/world.py        entities and their collision boxes
+game/levels.py       beats, campaign scripts, endless pool
+game/art.py          procedural art drawn at exact gameplay sizes
+game/core.py         gameplay loop, HUD, pause/clear screens
+ui/menu.py           main menu, campaign select, how to play
+tools/               level validator
+```
